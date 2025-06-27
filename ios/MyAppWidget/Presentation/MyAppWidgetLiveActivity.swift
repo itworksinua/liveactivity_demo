@@ -19,7 +19,7 @@ struct MyAppWidgetLiveActivity: Widget {
             } compactLeading: {
                 CarIconView()
             } compactTrailing: {
-                Text("T")
+                CountdownTextView(context: context, fontSize: 12, width: 60)
             } minimal: {
                 CarIconView()
             }

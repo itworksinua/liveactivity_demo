@@ -63,10 +63,7 @@ struct ParkingCenterBottomSectionView: View {
                 }
                 
                 durationColumn(title: labels.remainingTime, alignment: .center) {
-                    Text(timerInterval: start ... end, countsDown: true)
-                        .customFont(size: 20, weight: .bold, color: .appBlue)
-                        .multilineTextAlignment(.center)
-                        .frame(width: columnWidth)
+                    CountdownTextView(context: context, width: columnWidth)
                 }
                 
                 durationColumn(title: labels.totalDuration, alignment: .trailing) {
