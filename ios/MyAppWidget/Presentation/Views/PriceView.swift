@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct PriceView: View {
-    let price: (amount: Double, currency: String)
+    let price: ParkingLiveActivityAttributes.Price
     let style: ParkingLiveActivityStyle
     
     var body: some View {
-        Text(String(format: "%.2f %@", price.amount, price.currency))
+        Text(String(format: "%.2f %@", price.amount, price.currencySymbol))
             .customFont(size: 18, weight: .semibold, color: style.foregroundColor)
     }
 }

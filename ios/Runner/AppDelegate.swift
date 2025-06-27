@@ -48,7 +48,7 @@ import UIKit
         let model = ParkingLiveActivityModel(
             zoneId: "2.371",
             licensePlate: "AA627KT",
-            price: 1.5,
+            price: .init(amount: 1.5, currencySymbol: "€"),
             startDate: .now,
             endDate: .now.addingTimeInterval(140), // 1 min 20 sec
             labels: labels

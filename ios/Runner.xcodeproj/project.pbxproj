@@ -92,7 +92,7 @@
 		84BEFDBD2E0DE95500F9931E /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Application/Models/LiveActivitiesAppAttributes.swift,
+				Application/Models/ParkingLiveActivityAttributes.swift,
 			);
 			target = 97C146ED1CF9000F007C117D /* Runner */;
 		};

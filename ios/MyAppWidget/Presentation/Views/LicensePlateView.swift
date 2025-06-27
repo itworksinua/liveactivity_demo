@@ -15,7 +15,7 @@ struct LicensePlateView: View {
         IconLabelView(
             image: .licensePlateIcon,
             text: licensePlate,
-            style: style
+            foregroundColor: style.foregroundColor
         )
     }
 }

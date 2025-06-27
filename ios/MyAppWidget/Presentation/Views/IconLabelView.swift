@@ -12,8 +12,8 @@ struct IconLabelView: View {
     let text: String
     var fontSize: Double = 18
     var fontWeight: Font.Weight = .semibold
+    var foregroundColor: Color = .appPrimary
     var spacing: CGFloat = 4
-    let style: ParkingLiveActivityStyle
     
     var body: some View {
         HStack(spacing: spacing) {
@@ -21,7 +21,7 @@ struct IconLabelView: View {
             
             Text(text)
                 .lineLimit(1)
-                .customFont(size: fontSize, weight: fontWeight, color: style.foregroundColor)
+                .customFont(size: fontSize, weight: fontWeight, color: foregroundColor)
         }
     }
 }

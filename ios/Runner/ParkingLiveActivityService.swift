@@ -11,7 +11,7 @@ import Foundation
 struct ParkingLiveActivityModel {
     let zoneId: String
     let licensePlate: String
-    let price: Double
+    let price: ParkingLiveActivityAttributes.Price
     let startDate: Date
     let endDate: Date
     let labels: ParkingLiveActivityAttributes.Labels
