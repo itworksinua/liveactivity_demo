@@ -12,7 +12,7 @@ struct CarIconView: View {
     var body: some View {
         Image(.licensePlateIcon)
             .renderingMode(.template)
-            .foregroundStyle(.appBackground)
+            .foregroundStyle(.appBlue)
     }
 }
 
