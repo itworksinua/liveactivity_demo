@@ -21,7 +21,7 @@ struct MyAppWidgetLiveActivity: Widget {
             } compactTrailing: {
                 Text("T")
             } minimal: {
-                Text("M")
+                MinimalView()
             }
             .keylineTint(Color.red)
         }

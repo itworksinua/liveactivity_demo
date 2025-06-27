@@ -8,14 +8,14 @@
 import SwiftUI
 
 struct IconLabelView: View {
-    let image: Image
+    let image: ImageResource
     let text: String
     let fontSize: Double
     let fontWeight: Font.Weight
     let spacing: CGFloat
     
     init(
-        image: Image,
+        image: ImageResource,
         text: String,
         fontSize: Double = 18,
         fontWeight: Font.Weight = .semibold,
@@ -30,7 +30,7 @@ struct IconLabelView: View {
     
     var body: some View {
         HStack(spacing: spacing) {
-            image
+            Image(image)
             
             Text(text)
                 .lineLimit(1)

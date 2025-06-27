@@ -42,7 +42,7 @@ struct ParkingLiveActivityView: View {
         ZStack {
             HStack {
                 IconLabelView(
-                    image: Image(.zoneIdIcon),
+                    image: .zoneIdIcon,
                     text: attributes.zoneId
                 )
                 
@@ -53,7 +53,7 @@ struct ParkingLiveActivityView: View {
             }
             
             IconLabelView(
-                image: Image(.licensePlateIcon),
+                image: .licensePlateIcon,
                 text: attributes.licensePlate
             )
         }
