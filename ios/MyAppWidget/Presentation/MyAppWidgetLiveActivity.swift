@@ -50,7 +50,7 @@ extension ParkingLiveActivityAttributes {
             licensePlate: "AA627KT",
             price: 1.5,
             startDate: .now,
-//            endDate: .now.addingTimeInterval(5220) // 1h 27m
+//            endDate: .now.addingTimeInterval(5220), // 1h 27m
             endDate: .now.addingTimeInterval(80), // 80 sec
             labels: .init()
         )

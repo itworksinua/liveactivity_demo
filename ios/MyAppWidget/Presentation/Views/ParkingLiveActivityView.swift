@@ -84,23 +84,32 @@ struct ParkingLiveActivityView: View {
     
     @ViewBuilder
     private var bottomSection: some View {
-        HStack {
-            durationColumn(title: labels.currentDuration, alignment: .leading) {
-                Text(start, style: .relative)
-                    .customFont(size: 14, weight: .bold)
-            }
+        GeometryReader { proxy in
+            let columnWidth = proxy.size.width / 3
             
-            durationColumn(title: labels.remainingTime, alignment: .leading) {
-                Text(end, style: .relative)
-                    .customFont(size: 16, weight: .bold, color: .appBlue)
-            }
-            
-            durationColumn(title: labels.totalDuration, alignment: .trailing) {
-                Text(totalDuration, format: .units())
-                    .customFont(size: 14, weight: .bold)
+            HStack(spacing: .zero) {
+                durationColumn(title: labels.currentDuration, alignment: .leading) {
+                    Text(timerInterval: start ... end, countsDown: false)
+                        .customFont(size: 16, weight: .bold)
+                        .multilineTextAlignment(.leading)
+                        .frame(width: columnWidth)
+                }
+                
+                durationColumn(title: labels.remainingTime, alignment: .center) {
+                    Text(timerInterval: start ... end, countsDown: true)
+                        .customFont(size: 20, weight: .bold, color: .appBlue)
+                        .multilineTextAlignment(.center)
+                        .frame(width: columnWidth)
+                }
+                
+                durationColumn(title: labels.totalDuration, alignment: .trailing) {
+                    Text(totalDuration, format: .time(pattern: .hourMinuteSecond))
+                        .customFont(size: 16, weight: .bold)
+                        .frame(width: columnWidth, alignment: .trailing)
+                }
             }
         }
-        .frame(maxWidth: .infinity)
+        .frame(height: 40)
     }
     
     private func dateTimeColumn(for date: Date) -> some View {
