@@ -11,6 +11,7 @@ import WidgetKit
 
 struct ParkingLiveActivityView: View {
     let context: ActivityViewContext<ParkingLiveActivityAttributes>
+    private let style: ParkingLiveActivityStyle = .light
     
     var body: some View {
         VStack(spacing: 14) {
@@ -34,10 +35,7 @@ struct ParkingLiveActivityView: View {
     private var topSection: some View {
         ZStack {
             HStack {
-                IconLabelView(
-                    image: .zoneIdIcon,
-                    text: attributes.zoneId
-                )
+                ZoneIdView(zoneId: attributes.zoneId, style: style)
                 
                 Spacer()
                 
@@ -47,7 +45,7 @@ struct ParkingLiveActivityView: View {
             
             IconLabelView(
                 image: .licensePlateIcon,
-                text: attributes.licensePlate
+                text: attributes.licensePlate, style: style
             )
         }
     }

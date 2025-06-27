@@ -10,23 +10,10 @@ import SwiftUI
 struct IconLabelView: View {
     let image: ImageResource
     let text: String
-    let fontSize: Double
-    let fontWeight: Font.Weight
-    let spacing: CGFloat
-    
-    init(
-        image: ImageResource,
-        text: String,
-        fontSize: Double = 18,
-        fontWeight: Font.Weight = .semibold,
-        spacing: CGFloat = 4
-    ) {
-        self.image = image
-        self.text = text
-        self.fontSize = fontSize
-        self.fontWeight = fontWeight
-        self.spacing = spacing
-    }
+    var fontSize: Double = 18
+    var fontWeight: Font.Weight = .semibold
+    var spacing: CGFloat = 4
+    let style: ParkingLiveActivityStyle
     
     var body: some View {
         HStack(spacing: spacing) {
@@ -34,7 +21,7 @@ struct IconLabelView: View {
             
             Text(text)
                 .lineLimit(1)
-                .customFont(size: fontSize, weight: fontWeight)
+                .customFont(size: fontSize, weight: fontWeight, color: style.foregroundColor)
         }
     }
 }
