@@ -38,7 +38,10 @@ struct MyAppWidgetLiveActivity: Widget {
             Text("Trailing")
         }
         DynamicIslandExpandedRegion(.bottom) {
-            Text("Bottom")
+            ParkingCenterBottomSectionView(
+                context: context,
+                foregroundColor: .appBackground
+            )
         }
     }
 }
