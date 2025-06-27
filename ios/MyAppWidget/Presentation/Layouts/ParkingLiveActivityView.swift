@@ -11,6 +11,7 @@ import WidgetKit
 
 struct ParkingLiveActivityView: View {
     let context: ActivityViewContext<ParkingLiveActivityAttributes>
+    
     private let style: ParkingLiveActivityStyle = .light
     
     var body: some View {
@@ -39,18 +40,13 @@ struct ParkingLiveActivityView: View {
                 
                 Spacer()
                 
-                Text(String(format: "%.2f €", context.attributes.price))
-                    .customFont(size: 18, weight: .semibold)
+                PriceView(price: (attributes.price, "€"), style: .dark)
             }
             
-            IconLabelView(
-                image: .licensePlateIcon,
-                text: attributes.licensePlate, style: style
-            )
+            LicensePlateView(licensePlate: attributes.licensePlate, style: style)
         }
     }
     
-    ///Don't use this
     private func stroke() -> some View {
         RoundedRectangle(cornerRadius: 24)
             .inset(by: 1)

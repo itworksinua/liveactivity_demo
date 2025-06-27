@@ -33,15 +33,13 @@ struct MyAppWidgetLiveActivity: Widget {
         context: ActivityViewContext<ParkingLiveActivityAttributes>
     ) -> DynamicIslandExpandedContent<some View> {
         DynamicIslandExpandedRegion(.leading) {
-            ZoneIdView(zoneId: context.attributes.zoneId, style: .dark)
+            ZoneIdView(
+                zoneId: context.attributes.zoneId,
+                style: .dark
+            )
         }
         DynamicIslandExpandedRegion(.trailing) {
-
-        }
-        
-        DynamicIslandExpandedRegion(.center) {
-            
-                
+            PriceView(price: (context.attributes.price, "€"), style: .dark)
         }
         
         DynamicIslandExpandedRegion(.bottom) {
