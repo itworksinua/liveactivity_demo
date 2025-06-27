@@ -10,7 +10,7 @@ import WidgetKit
 
 struct ParkingCenterBottomSectionView: View {
     let context: ActivityViewContext<ParkingLiveActivityAttributes>
-    let foregroundColor: Color
+    let style: ParkingLiveActivityStyle
     
     var body: some View {
         VStack(spacing: 8) {
@@ -24,6 +24,7 @@ struct ParkingCenterBottomSectionView: View {
         context.attributes
     }
     
+    private var foregroundColor: Color { style.foregroundColor }
     private var labels: ParkingLiveActivityAttributes.Labels { attributes.labels }
     private var start: Date { attributes.startDate }
     private var end: Date { attributes.endDate }
@@ -40,16 +41,13 @@ struct ParkingCenterBottomSectionView: View {
     }
     
     private var progressView: some View {
-        ProgressView(
-            timerInterval: start ... end,
-            countsDown: true
-        )
-        .labelsHidden()
-        .progressViewStyle(.linear)
-        .tint(.appBlue)
-        .rotationEffect(.degrees(180))
-        .scaleEffect(y: 1.5)
-        .clipShape(.capsule(style: .continuous))
+        ProgressView(timerInterval: start ... end, countsDown: true)
+            .labelsHidden()
+            .progressViewStyle(.linear)
+            .tint(.appBlue)
+            .rotationEffect(.degrees(180))
+            .scaleEffect(y: 1.5)
+            .clipShape(.capsule(style: .continuous))
     }
     
     private var bottomSection: some View {
@@ -99,7 +97,7 @@ struct ParkingCenterBottomSectionView: View {
         VStack(alignment: alignment, spacing: 4) {
             Text(title)
                 .lineLimit(1)
-                .customFont(size: 12, weight: .regular, color: foregroundColor.opacity(0.5))
+                .customFont(size: 12, weight: .regular, color: style.secondaryColor)
             
             content()
         }

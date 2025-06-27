@@ -17,11 +17,11 @@ struct MyAppWidgetLiveActivity: Widget {
             DynamicIsland {
                 expandedContent(context: context)
             } compactLeading: {
-                Text("L")
+                CarIconView()
             } compactTrailing: {
                 Text("T")
             } minimal: {
-                MinimalView()
+                CarIconView()
             }
             .keylineTint(Color.red)
         }
@@ -38,10 +38,7 @@ struct MyAppWidgetLiveActivity: Widget {
             Text("Trailing")
         }
         DynamicIslandExpandedRegion(.bottom) {
-            ParkingCenterBottomSectionView(
-                context: context,
-                foregroundColor: .appBackground
-            )
+            ParkingCenterBottomSectionView(context: context, style: .dark)
         }
     }
 }

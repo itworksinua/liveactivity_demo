@@ -18,7 +18,7 @@ struct ParkingLiveActivityView: View {
             
             ParkingCenterBottomSectionView(
                 context: context,
-                foregroundColor: .appPrimary
+                style: .light
             )
         }
         .padding(.init(top: 18, leading: 18, bottom: 12, trailing: 18))
