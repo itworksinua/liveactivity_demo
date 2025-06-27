@@ -14,12 +14,13 @@ struct ParkingLiveActivityModel {
     let price: Double
     let startDate: Date
     let endDate: Date
+    let labels: ParkingLiveActivityAttributes.Labels
 }
 
 final class ParkingLiveActivityService {
     static let shared = ParkingLiveActivityService()
     
-    private var activity: Activity<LiveActivitiesAppAttributes>?
+    private var activity: Activity<ParkingLiveActivityAttributes>?
     
     private init() {}
     
@@ -29,15 +30,16 @@ final class ParkingLiveActivityService {
             return
         }
         
-        let attributes = LiveActivitiesAppAttributes(
+        let attributes = ParkingLiveActivityAttributes(
             zoneId: model.zoneId,
             licensePlate: model.licensePlate,
             price: model.price,
             startDate: model.startDate,
-            endDate: model.endDate
+            endDate: model.endDate,
+            labels: model.labels
         )
         
-        let content = ActivityContent(state: LiveActivitiesAppAttributes.ContentState(), staleDate: nil)
+        let content = ActivityContent(state: ParkingLiveActivityAttributes.ContentState(), staleDate: nil)
         
         Task { [weak self] in
             guard let self else { return }
@@ -65,20 +67,20 @@ final class ParkingLiveActivityService {
     
     func endAll() {
         Task { [weak self] in
-            for activity in Activity<LiveActivitiesAppAttributes>.activities {
+            for activity in Activity<ParkingLiveActivityAttributes>.activities {
                 await activity.end(nil, dismissalPolicy: .immediate)
             }
             self?.activity = nil
         }
     }
     
-    private func update(_ activity: Activity<LiveActivitiesAppAttributes>, with content: ActivityContent<LiveActivitiesAppAttributes.ContentState>) async {
+    private func update(_ activity: Activity<ParkingLiveActivityAttributes>, with content: ActivityContent<ParkingLiveActivityAttributes.ContentState>) async {
         await activity.update(content)
     }
     
-    private func start(attributes: LiveActivitiesAppAttributes, content: ActivityContent<LiveActivitiesAppAttributes.ContentState>) async {
+    private func start(attributes: ParkingLiveActivityAttributes, content: ActivityContent<ParkingLiveActivityAttributes.ContentState>) async {
         do {
-            let newActivity = try Activity<LiveActivitiesAppAttributes>.request(attributes: attributes, content: content)
+            let newActivity = try Activity<ParkingLiveActivityAttributes>.request(attributes: attributes, content: content)
             activity = newActivity
             print("✅ Live Activity started: \(newActivity.id)")
         } catch {
@@ -89,7 +91,7 @@ final class ParkingLiveActivityService {
     private func restoreActivityIfNeeded(for zoneId: String) {
         guard activity == nil else { return }
         
-        activity = Activity<LiveActivitiesAppAttributes>.activities.first(where: {
+        activity = Activity<ParkingLiveActivityAttributes>.activities.first(where: {
             $0.attributes.zoneId == zoneId
         })
         

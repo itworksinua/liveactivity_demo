@@ -10,13 +10,7 @@ import SwiftUI
 import WidgetKit
 
 struct ParkingLiveActivityView: View {
-    private let context: ActivityViewContext<LiveActivitiesAppAttributes>
-    private let data: ParkingData
-    
-    init(context: ActivityViewContext<LiveActivitiesAppAttributes>) {
-        self.context = context
-        self.data = .init(attributes: context.attributes)
-    }
+    let context: ActivityViewContext<ParkingLiveActivityAttributes>
     
     var body: some View {
         VStack(spacing: 14) {
@@ -35,10 +29,11 @@ struct ParkingLiveActivityView: View {
         .overlay(content: stroke)     ///Don't use this
     }
     
-    private var attributes: LiveActivitiesAppAttributes {
+    private var attributes: ParkingLiveActivityAttributes {
         context.attributes
     }
     
+    private var labels: ParkingLiveActivityAttributes.Labels { attributes.labels }
     private var start: Date { attributes.startDate }
     private var end: Date { attributes.endDate }
     private var totalDuration: Duration { .seconds(max(0, end.timeIntervalSince(start))) }
@@ -90,17 +85,17 @@ struct ParkingLiveActivityView: View {
     @ViewBuilder
     private var bottomSection: some View {
         HStack {
-            durationColumn(title: data.currentDuration, alignment: .leading) {
+            durationColumn(title: labels.currentDuration, alignment: .leading) {
                 Text(start, style: .relative)
                     .customFont(size: 14, weight: .bold)
             }
             
-            durationColumn(title: data.remainingTime, alignment: .leading) {
+            durationColumn(title: labels.remainingTime, alignment: .leading) {
                 Text(end, style: .relative)
                     .customFont(size: 16, weight: .bold, color: .appBlue)
             }
             
-            durationColumn(title: data.totalDuration, alignment: .trailing) {
+            durationColumn(title: labels.totalDuration, alignment: .trailing) {
                 Text(totalDuration, format: .units())
                     .customFont(size: 14, weight: .bold)
             }

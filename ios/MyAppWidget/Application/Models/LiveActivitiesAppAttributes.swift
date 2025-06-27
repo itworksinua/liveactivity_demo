@@ -8,7 +8,7 @@
 import ActivityKit
 import Foundation
 
-struct LiveActivitiesAppAttributes: ActivityAttributes {
+struct ParkingLiveActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {}
     
     let zoneId: String
@@ -16,4 +16,23 @@ struct LiveActivitiesAppAttributes: ActivityAttributes {
     let price: Double
     let startDate: Date
     let endDate: Date
+    let labels: Labels
+}
+
+extension ParkingLiveActivityAttributes {
+    struct Labels: Codable, Hashable {
+        let currentDuration: String
+        let remainingTime: String
+        let totalDuration: String
+        
+        init(
+            currentDuration: String = "Current Duration",
+            remainingTime: String = "Remaining Time",
+            totalDuration: String = "Total Duration"
+        ) {
+            self.currentDuration = currentDuration
+            self.remainingTime = remainingTime
+            self.totalDuration = totalDuration
+        }
+    }
 }

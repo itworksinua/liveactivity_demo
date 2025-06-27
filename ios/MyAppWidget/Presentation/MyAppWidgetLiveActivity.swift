@@ -11,7 +11,7 @@ import SwiftUI
 
 struct MyAppWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
-        ActivityConfiguration(for: LiveActivitiesAppAttributes.self) { context in
+        ActivityConfiguration(for: ParkingLiveActivityAttributes.self) { context in
             ParkingLiveActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
@@ -29,7 +29,7 @@ struct MyAppWidgetLiveActivity: Widget {
     
     @DynamicIslandExpandedContentBuilder
     private func expandedContent(
-        context: ActivityViewContext<LiveActivitiesAppAttributes>
+        context: ActivityViewContext<ParkingLiveActivityAttributes>
     ) -> DynamicIslandExpandedContent<some View> {
         DynamicIslandExpandedRegion(.leading) {
             Text("Leading")
@@ -43,27 +43,28 @@ struct MyAppWidgetLiveActivity: Widget {
     }
 }
 
-extension LiveActivitiesAppAttributes {
-    static var preview: LiveActivitiesAppAttributes {
-        LiveActivitiesAppAttributes(
+extension ParkingLiveActivityAttributes {
+    static var preview: ParkingLiveActivityAttributes {
+        ParkingLiveActivityAttributes(
             zoneId: "2.371",
             licensePlate: "AA627KT",
             price: 1.5,
             startDate: .now,
 //            endDate: .now.addingTimeInterval(5220) // 1h 27m
-            endDate: .now.addingTimeInterval(80) // 80 sec
+            endDate: .now.addingTimeInterval(80), // 80 sec
+            labels: .init()
         )
     }
 }
 
-extension LiveActivitiesAppAttributes.ContentState {
-    static var empty: LiveActivitiesAppAttributes.ContentState {
-        LiveActivitiesAppAttributes.ContentState()
+extension ParkingLiveActivityAttributes.ContentState {
+    static var empty: ParkingLiveActivityAttributes.ContentState {
+        ParkingLiveActivityAttributes.ContentState()
     }
 }
 
-#Preview("Lock Screen", as: .content, using: LiveActivitiesAppAttributes.preview) {
+#Preview("Lock Screen", as: .content, using: ParkingLiveActivityAttributes.preview) {
     MyAppWidgetLiveActivity()
 } contentStates: {
-    LiveActivitiesAppAttributes.ContentState.empty
+    ParkingLiveActivityAttributes.ContentState.empty
 }

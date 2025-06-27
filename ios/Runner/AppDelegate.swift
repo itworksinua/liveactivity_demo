@@ -39,16 +39,21 @@ import UIKit
     }
     
     private func startLiveActivity() {
+        let labels: ParkingLiveActivityAttributes.Labels = .init(
+            currentDuration: "Тривалість",
+            remainingTime: "Залишилось",
+            totalDuration: "Загалом"
+        )
+        
         let model = ParkingLiveActivityModel(
             zoneId: "2.371",
             licensePlate: "AA627KT",
             price: 1.5,
             startDate: .now,
-            endDate: .now.addingTimeInterval(140) // 1 min 20 sec
+            endDate: .now.addingTimeInterval(140), // 1 min 20 sec
+            labels: labels
         )
         
         ParkingLiveActivityService.shared.sync(with: model)
     }
-    
-    
 }
