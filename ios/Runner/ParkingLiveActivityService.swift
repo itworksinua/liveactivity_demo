@@ -22,35 +22,20 @@ final class ParkingLiveActivityService {
     
     private var activity: Activity<ParkingLiveActivityAttributes>?
     
+    var isLiveActivityEnabled: Bool {
+        ActivityAuthorizationInfo().areActivitiesEnabled
+    }
+    
     private init() {}
     
     func sync(with model: ParkingLiveActivityModel) {
-        guard ActivityAuthorizationInfo().areActivitiesEnabled else {
+        guard isLiveActivityEnabled else {
             print("⛔️ Live Activities not available, skipping sync")
             return
         }
         
-        let attributes = ParkingLiveActivityAttributes(
-            zoneId: model.zoneId,
-            licensePlate: model.licensePlate,
-            price: model.price,
-            startDate: model.startDate,
-            endDate: model.endDate,
-            labels: model.labels
-        )
-        
-        let content = ActivityContent(state: ParkingLiveActivityAttributes.ContentState(), staleDate: nil)
-        
         Task { [weak self] in
-            guard let self else { return }
-            
-            self.restoreActivityIfNeeded(for: model.zoneId)
-            
-            if let activity, activity.activityState == .active {
-                await self.update(activity, with: content)
-            } else {
-                await self.start(attributes: attributes, content: content)
-            }
+            await self?.performSync(with: model)
         }
     }
     
@@ -65,12 +50,44 @@ final class ParkingLiveActivityService {
         }
     }
     
-    func endAll() {
-        Task { [weak self] in
-            for activity in Activity<ParkingLiveActivityAttributes>.activities {
-                await activity.end(nil, dismissalPolicy: .immediate)
-            }
-            self?.activity = nil
+    private func performSync(with model: ParkingLiveActivityModel) async {
+        let attributes = makeAttributes(from: model)
+        let content = makeContent(with: model.endDate)
+        
+        restoreActivityIfNeeded(for: model.zoneId)
+        
+        guard let currentActivity = activity else {
+            activity = await start(attributes: attributes, content: content)
+            return
+        }
+        
+        switch currentActivity.activityState {
+        case .active:
+            await update(currentActivity, with: content)
+        case .dismissed:
+            return
+        default:
+            activity = await start(attributes: attributes, content: content)
+        }
+    }
+    
+    @discardableResult
+    private func start(
+        attributes: ParkingLiveActivityAttributes,
+        content: ActivityContent<ParkingLiveActivityAttributes.ContentState>
+    ) async -> Activity<ParkingLiveActivityAttributes>? {
+        do {
+            let activity = try Activity<ParkingLiveActivityAttributes>.request(
+                attributes: attributes,
+                content: content
+            )
+            
+            print("✅ Live Activity started: \(activity.id)")
+            
+            return activity
+        } catch {
+            print("❌ Failed to start Live Activity: \(error)")
+            return nil
         }
     }
     
@@ -78,22 +95,30 @@ final class ParkingLiveActivityService {
         await activity.update(content)
     }
     
-    private func start(attributes: ParkingLiveActivityAttributes, content: ActivityContent<ParkingLiveActivityAttributes.ContentState>) async {
-        do {
-            let newActivity = try Activity<ParkingLiveActivityAttributes>.request(attributes: attributes, content: content)
-            activity = newActivity
-            print("✅ Live Activity started: \(newActivity.id)")
-        } catch {
-            print("❌ Failed to start Live Activity: \(error)")
-        }
+    private func makeAttributes(from model: ParkingLiveActivityModel) -> ParkingLiveActivityAttributes {
+        ParkingLiveActivityAttributes(
+            zoneId: model.zoneId,
+            licensePlate: model.licensePlate,
+            price: model.price,
+            startDate: model.startDate,
+            endDate: model.endDate,
+            labels: model.labels
+        )
+    }
+    
+    private func makeContent(with staleDate: Date) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
+        let state = ParkingLiveActivityAttributes.ContentState()
+        return ActivityContent(state: state, staleDate: staleDate)
+    }
+    
+    private func existingActivity(for zoneId: String) -> Activity<ParkingLiveActivityAttributes>? {
+        Activity<ParkingLiveActivityAttributes>.activities.first { $0.attributes.zoneId == zoneId }
     }
     
     private func restoreActivityIfNeeded(for zoneId: String) {
         guard activity == nil else { return }
         
-        activity = Activity<ParkingLiveActivityAttributes>.activities.first(where: {
-            $0.attributes.zoneId == zoneId
-        })
+        activity = existingActivity(for: zoneId)
         
         if let restored = activity {
             print("🔄 Restored existing Live Activity: \(restored.id)")
