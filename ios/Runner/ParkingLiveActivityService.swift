@@ -22,11 +22,11 @@ final class ParkingLiveActivityService {
     
     private var activity: Activity<ParkingLiveActivityAttributes>?
     
+    private init() {}
+    
     var isLiveActivityEnabled: Bool {
         ActivityAuthorizationInfo().areActivitiesEnabled
     }
-    
-    private init() {}
     
     func sync(with model: ParkingLiveActivityModel) {
         guard isLiveActivityEnabled else {
@@ -83,7 +83,6 @@ final class ParkingLiveActivityService {
             )
             
             print("✅ Live Activity started: \(activity.id)")
-            
             return activity
         } catch {
             print("❌ Failed to start Live Activity: \(error)")
