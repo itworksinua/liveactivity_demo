@@ -3,6 +3,8 @@ import UIKit
 
 @main
 @objc class AppDelegate: FlutterAppDelegate {
+    private let liveActivityService: ParkingLiveActivityService = .shared
+    
   override func application(
     _ application: UIApplication,
     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -15,7 +17,7 @@ import UIKit
           // This method is invoked on the UI thread.
           // Handle battery messages.
           if call.method == "startActivity"  {
-              self.injectTestParkingLabels()
+              self.startLiveActivity()
               result(nil)
               return
           }
@@ -27,16 +29,6 @@ import UIKit
     GeneratedPluginRegistrant.register(with: self)
     return super.application(application, didFinishLaunchingWithOptions: launchOptions)
   }
-    
-    private func injectTestParkingLabels(prefix: String = "live_activity") {
-        let sharedDefault = UserDefaults(suiteName: "group.com.itworksinua.liveactivity")!
-        
-        sharedDefault.set("Тривалість", forKey: "\(prefix)_current_duration")
-        sharedDefault.set("Залишилось", forKey: "\(prefix)_remaining_time")
-        sharedDefault.set("Загалом", forKey: "\(prefix)_total_duration")
-        startLiveActivity()
-        
-    }
     
     private func startLiveActivity() {
         let labels: ParkingLiveActivityAttributes.Labels = .init(
@@ -50,10 +42,14 @@ import UIKit
             licensePlate: "AA627KT",
             price: .init(amount: 1.5, currencySymbol: "€"),
             startDate: .now,
-            endDate: .now.addingTimeInterval(140), // 1 min 20 sec
+            endDate: .now.addingTimeInterval(140),
             labels: labels
         )
         
-        ParkingLiveActivityService.shared.sync(with: model)
+        liveActivityService.sync(with: model)
+    }
+    
+    private func endLiveActivity(for zoneId: String) {
+        liveActivityService.end(for: zoneId)
     }
 }
