@@ -21,6 +21,7 @@ final class ParkingLiveActivityService {
     static let shared = ParkingLiveActivityService()
     
     private var activity: Activity<ParkingLiveActivityAttributes>?
+    private var activityObservationTask: Task<Void, Never>?
     
     private init() {}
     
@@ -47,12 +48,15 @@ final class ParkingLiveActivityService {
             
             await activity?.end(nil, dismissalPolicy: .immediate)
             activity = nil
+            
+            print("🧹 Live Activity ended for zone: \(zoneId)")
         }
     }
     
     private func performSync(with model: ParkingLiveActivityModel) async {
         let attributes = makeAttributes(from: model)
-        let content = makeContent(with: model.endDate)
+        let delayedStaleDate = model.endDate.addingTimeInterval(1)
+        let content = makeContent(with: delayedStaleDate)
         
         restoreActivityIfNeeded(for: model.zoneId)
         
@@ -82,6 +86,8 @@ final class ParkingLiveActivityService {
                 content: content
             )
             
+            observeLiveActivity(activity)
+            
             print("✅ Live Activity started: \(activity.id)")
             return activity
         } catch {
@@ -92,6 +98,7 @@ final class ParkingLiveActivityService {
     
     private func update(_ activity: Activity<ParkingLiveActivityAttributes>, with content: ActivityContent<ParkingLiveActivityAttributes.ContentState>) async {
         await activity.update(content)
+        print("✅ Live Activity updated: \(activity.id)")
     }
     
     private func makeAttributes(from model: ParkingLiveActivityModel) -> ParkingLiveActivityAttributes {
@@ -122,5 +129,26 @@ final class ParkingLiveActivityService {
         if let restored = activity {
             print("🔄 Restored existing Live Activity: \(restored.id)")
         }
+    }
+    
+    private func observeLiveActivity(_ activity: Activity<ParkingLiveActivityAttributes>) {
+        activityObservationTask = Task { @MainActor [weak self] in
+            guard let self else { return }
+            
+            for await state in activity.activityStateUpdates {
+                if state == .stale {
+                    end(for: activity.attributes.zoneId)
+                    print("🛑 Live Activity ended due to stale state: \(activity.id)")
+                    break
+                }
+            }
+            
+            cancelObservation()
+        }
+    }
+    
+    private func cancelObservation() {
+        activityObservationTask?.cancel()
+        activityObservationTask = nil
     }
 }
