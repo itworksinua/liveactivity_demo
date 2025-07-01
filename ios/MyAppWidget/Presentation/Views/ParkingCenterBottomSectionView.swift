@@ -88,10 +88,15 @@ struct ParkingCenterBottomSectionView: View {
     private var staleBottomSection: some View {
         VStack {
             Text(labels.parkingEndedTitle)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .customFont(size: 20, weight: .bold, color: style.foregroundColor)
             
             Text(labels.parkingEndedSubtitle)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .customFont(size: 16, color: style.secondaryColor)
         }
-        .customFont(size: 16, weight: .regular, color: style.secondaryColor)
     }
     
     private func dateTimeColumn(for date: Date) -> some View {

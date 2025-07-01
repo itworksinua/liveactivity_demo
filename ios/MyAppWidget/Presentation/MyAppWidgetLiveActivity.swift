@@ -22,7 +22,7 @@ struct MyAppWidgetLiveActivity: Widget {
                 CarIconView()
                     .padding(.horizontal, horizontalPadding)
             } compactTrailing: {
-                CountdownTextView(context: context, fontSize: 12, width: 60)
+                ParkingCompactTrailingView(context: context)
             } minimal: {
                 CarIconView()
             }

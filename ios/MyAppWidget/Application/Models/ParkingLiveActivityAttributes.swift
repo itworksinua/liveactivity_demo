@@ -29,6 +29,7 @@ extension ParkingLiveActivityAttributes {
         let currentDuration: String
         let remainingTime: String
         let totalDuration: String
+        let ended: String
         let parkingEndedTitle: String
         let parkingEndedSubtitle: String
         
@@ -36,12 +37,14 @@ extension ParkingLiveActivityAttributes {
             currentDuration: String = "Current Duration",
             remainingTime: String = "Remaining Time",
             totalDuration: String = "Total Duration",
+            ended: String = "Ended",
             parkingEndedTitle: String = "Parking is ended",
             parkingEndedSubtitle: String = "Thanks for using our service"
         ) {
             self.currentDuration = currentDuration
             self.remainingTime = remainingTime
             self.totalDuration = totalDuration
+            self.ended = ended
             self.parkingEndedTitle = parkingEndedTitle
             self.parkingEndedSubtitle = parkingEndedSubtitle
         }

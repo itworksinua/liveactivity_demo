@@ -35,6 +35,7 @@ import UIKit
             currentDuration: "Тривалість",
             remainingTime: "Залишилось",
             totalDuration: "Загалом",
+            ended: "Кінець",
             parkingEndedTitle: "Паркування завершено",
             parkingEndedSubtitle: "Дякуємо, що скористались сервісом!"
         )
