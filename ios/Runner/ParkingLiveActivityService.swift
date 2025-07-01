@@ -53,6 +53,20 @@ final class ParkingLiveActivityService {
         }
     }
     
+    func endAll() {
+        Task { [weak self] in
+            guard let self else { return }
+            
+            for activity in Activity<ParkingLiveActivityAttributes>.activities {
+                await activity.end(nil, dismissalPolicy: .immediate)
+                print("🧹 Ended activity: \(activity.id)")
+            }
+            
+            activity = nil
+            cancelObservation()
+        }
+    }
+    
     private func performSync(with model: ParkingLiveActivityModel) async {
         let attributes = makeAttributes(from: model)
         let delayedStaleDate = model.endDate.addingTimeInterval(1)

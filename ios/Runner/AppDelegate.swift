@@ -55,4 +55,8 @@ import UIKit
     private func endLiveActivity(for zoneId: String) {
         liveActivityService.end(for: zoneId)
     }
+    
+    private func endAllLiveActivity() {
+        liveActivityService.endAll()
+    }
 }
