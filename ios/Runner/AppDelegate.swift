@@ -34,7 +34,9 @@ import UIKit
         let labels: ParkingLiveActivityAttributes.Labels = .init(
             currentDuration: "Тривалість",
             remainingTime: "Залишилось",
-            totalDuration: "Загалом"
+            totalDuration: "Загалом",
+            parkingEndedTitle: "Паркування завершено",
+            parkingEndedSubtitle: "Дякуємо, що скористались сервісом!"
         )
         
         let model = ParkingLiveActivityModel(

@@ -50,7 +50,16 @@ struct ParkingCenterBottomSectionView: View {
             .clipShape(.capsule(style: .continuous))
     }
     
+    @ViewBuilder
     private var bottomSection: some View {
+        if context.isStale {
+            staleBottomSection
+        } else {
+            activeBottomSection
+        }
+    }
+    
+    private var activeBottomSection: some View {
         GeometryReader { proxy in
             let columnWidth = proxy.size.width / 3
             
@@ -74,6 +83,15 @@ struct ParkingCenterBottomSectionView: View {
             }
         }
         .frame(height: 40)
+    }
+    
+    private var staleBottomSection: some View {
+        VStack {
+            Text(labels.parkingEndedTitle)
+            
+            Text(labels.parkingEndedSubtitle)
+        }
+        .customFont(size: 16, weight: .regular, color: style.secondaryColor)
     }
     
     private func dateTimeColumn(for date: Date) -> some View {
