@@ -10,10 +10,10 @@ import SwiftUI
 struct IconLabelView: View {
     let image: ImageResource
     let text: String
-    var fontSize: Double = 17
+    var fontSize: Double = 16
     var fontWeight: Font.Weight = .bold
     var foregroundColor: Color = .appPrimary
-    var spacing: CGFloat = 7
+    var spacing: CGFloat = 8
     
     var body: some View {
         HStack(spacing: spacing) {
@@ -21,6 +21,7 @@ struct IconLabelView: View {
             
             Text(text)
                 .lineLimit(1)
+                .minimumScaleFactor(0.6)
                 .customFont(size: fontSize, weight: fontWeight, color: foregroundColor)
         }
     }

@@ -44,8 +44,9 @@ struct ParkingBottomSectionView: View {
                     .customFont(size: 13, weight: .bold, color: foregroundColor)
                 
                 Text(end.formatted(date: .omitted, time: .shortened))
-                    .customFont(size: 16, weight: .bold, color: .appBlue)
+                    .customFont(size: 20, weight: .bold, color: .appBlue)
             }
+            .padding(.bottom, 9)
         }
     }
     

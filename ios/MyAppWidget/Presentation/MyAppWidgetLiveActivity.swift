@@ -19,12 +19,12 @@ struct MyAppWidgetLiveActivity: Widget {
             DynamicIsland {
                 expandedContent(context: context)
             } compactLeading: {
-                CarIconView()
+                Image(.logoShort)
                     .padding(.horizontal, horizontalPadding)
             } compactTrailing: {
                 ParkingCompactTrailingView(context: context)
             } minimal: {
-                CarIconView()
+                Image(.logoShort)
             }
             .keylineTint(Color.red)
         }
@@ -40,12 +40,12 @@ struct MyAppWidgetLiveActivity: Widget {
         }
         
         DynamicIslandExpandedRegion(.trailing) {
-            PriceView(price: context.attributes.price, style: style)
+            LicensePlateView(licensePlate: context.attributes.licensePlate, style: style)
                 .padding(.horizontal, horizontalPadding)
         }
         
         DynamicIslandExpandedRegion(.bottom) {
-            ParkingCenterBottomSectionView(context: context, style: style)
+            ParkingBottomSectionView(context: context, style: style)
                 .padding(.horizontal, horizontalPadding)
         }
     }
@@ -58,7 +58,6 @@ extension ParkingLiveActivityAttributes {
         ParkingLiveActivityAttributes(
             zoneId: "2.371",
             licensePlate: "AA627KT",
-            price: .init(amount: 1.5, currencySymbol: "€"),
             startDate: .now,
 //            endDate: .now.addingTimeInterval(5220), // 1h 27m
             endDate: .now.addingTimeInterval(80), // 80 sec
