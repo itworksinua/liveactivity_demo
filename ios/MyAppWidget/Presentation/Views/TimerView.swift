@@ -13,6 +13,7 @@ struct TimerView: View {
     var fontSize: CGFloat = 52
     var fontWeight: Font.Weight = .bold
     var color: Color = .appPrimary
+    var width: CGFloat = .infinity
     
     var body: some View {
         Group {
@@ -24,6 +25,7 @@ struct TimerView: View {
         }
         .customFont(size: fontSize, weight: fontWeight, color: color)
         .multilineTextAlignment(.leading)
+        .frame(width: width)
     }
     
     private var start: Date { context.attributes.startDate }

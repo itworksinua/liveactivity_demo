@@ -16,7 +16,12 @@ struct ParkingCompactTrailingView: View {
             Text(context.attributes.labels.ended)
                 .customFont(size: 12, weight: .bold, color: .appBlue)
         } else {
-            CountdownTextView(context: context, fontSize: 12, width: 60)
+            TimerView(
+                context: context,
+                fontSize: 12,
+                color: .appBlue,
+                width: 60
+            )
         }
     }
 }
