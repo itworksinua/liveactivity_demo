@@ -15,38 +15,34 @@ struct ParkingLiveActivityView: View {
     private let style: ParkingLiveActivityStyle = .light
     
     var body: some View {
-        VStack(spacing: 14) {
+        VStack(spacing: hasEndDate ? 5 : 18) {
             topSection
             
-            ParkingCenterBottomSectionView(context: context, style: style)
+            bottomSection
         }
-        .padding(.init(top: 18, leading: 18, bottom: 12, trailing: 18))
+        .padding(EdgeInsets(top: 14, leading: 20, bottom: hasEndDate ? 16 : 12, trailing: 32))
         .activityBackgroundTint(.appBackground)
         .activitySystemActionForegroundColor(.appBackground)
-        .overlay(content: stroke)     ///Don't use this
     }
     
-    private var attributes: ParkingLiveActivityAttributes {
-        context.attributes
-    }
+    private var attributes: ParkingLiveActivityAttributes { context.attributes }
+    private var hasEndDate: Bool { attributes.endDate != nil }
     
     private var topSection: some View {
-        ZStack {
-            HStack {
-                ZoneIdView(zoneId: attributes.zoneId, style: style)
-                
-                Spacer()
-                
-                PriceView(price: attributes.price, style: style)
-            }
+        HStack(alignment: .top, spacing: 20) {
+            Image(.logo)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(.leading, 5)
             
-            LicensePlateView(licensePlate: attributes.licensePlate, style: style)
+            VStack(alignment: .trailing, spacing: 4) {
+                LicensePlateView(licensePlate: attributes.licensePlate, style: style)
+                
+                ZoneIdView(zoneId: attributes.zoneId, style: style)
+            }
         }
     }
     
-    private func stroke() -> some View {
-        RoundedRectangle(cornerRadius: 24)
-            .inset(by: 1)
-            .stroke(.appBlue, lineWidth: 2)
+    private var bottomSection: some View {
+        ParkingCenterBottomSectionView(context: context, style: style)
     }
 }
