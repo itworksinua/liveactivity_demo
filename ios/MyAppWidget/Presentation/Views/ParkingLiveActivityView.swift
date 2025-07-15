@@ -43,6 +43,6 @@ struct ParkingLiveActivityView: View {
     }
     
     private var bottomSection: some View {
-        ParkingCenterBottomSectionView(context: context, style: style)
+        ParkingBottomSectionView(context: context, style: style)
     }
 }
