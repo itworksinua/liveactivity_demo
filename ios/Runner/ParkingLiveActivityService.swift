@@ -12,7 +12,7 @@ struct ParkingLiveActivityModel {
     let zoneId: String
     let licensePlate: String
     let startDate: Date
-    let endDate: Date
+    var endDate: Date? = nil
     let labels: ParkingLiveActivityAttributes.Labels
 }
 
@@ -68,7 +68,7 @@ final class ParkingLiveActivityService {
     
     private func performSync(with model: ParkingLiveActivityModel) async {
         let attributes = makeAttributes(from: model)
-        let delayedStaleDate = model.endDate.addingTimeInterval(1)
+        let delayedStaleDate = model.endDate?.addingTimeInterval(1)
         let content = makeContent(with: delayedStaleDate)
         
         restoreActivityIfNeeded(for: model.zoneId)
@@ -124,7 +124,7 @@ final class ParkingLiveActivityService {
         )
     }
     
-    private func makeContent(with staleDate: Date) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
+    private func makeContent(with staleDate: Date?) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
         let state = ParkingLiveActivityAttributes.ContentState()
         return ActivityContent(state: state, staleDate: staleDate)
     }
