@@ -20,4 +20,9 @@ extension View {
                 .font(.system(size: size, weight: weight))
         }
     }
+    
+    func framed(size: CGSize = .init(width: 22, height: 22)) -> some View {
+        self
+            .frame(width: size.width, height: size.height)
+    }
 }

@@ -32,3 +32,7 @@ extension ParkingLiveActivityAttributes {
         }
     }
 }
+
+extension ParkingLiveActivityAttributes {
+    var hasEndDate: Bool { endDate != nil }
+}

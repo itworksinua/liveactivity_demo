@@ -17,8 +17,4 @@ enum ParkingLiveActivityStyle {
         case .dark: .appBackground
         }
     }
-    
-    var secondaryColor: Color {
-        foregroundColor.opacity(0.5)
-    }
 }

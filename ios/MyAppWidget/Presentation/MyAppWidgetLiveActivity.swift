@@ -19,12 +19,12 @@ struct MyAppWidgetLiveActivity: Widget {
             DynamicIsland {
                 expandedContent(context: context)
             } compactLeading: {
-                Image(.logoShort)
+                Logo()
                     .padding(.horizontal, horizontalPadding)
             } compactTrailing: {
                 ParkingCompactTrailingView(context: context)
             } minimal: {
-                Image(.logoShort)
+                Logo()
             }
             .keylineTint(Color.red)
         }
@@ -32,16 +32,21 @@ struct MyAppWidgetLiveActivity: Widget {
     
     @DynamicIslandExpandedContentBuilder
     private func expandedContent(context: ActivityViewContext<ParkingLiveActivityAttributes>) -> DynamicIslandExpandedContent<some View> {
+        let attributes = context.attributes
         let style: ParkingLiveActivityStyle = .dark
         
         DynamicIslandExpandedRegion(.leading) {
-            ZoneIdView(zoneId: context.attributes.zoneId, style: style)
+            Logo()
                 .padding(.horizontal, horizontalPadding)
         }
         
         DynamicIslandExpandedRegion(.trailing) {
-            LicensePlateView(licensePlate: context.attributes.licensePlate, style: style)
-                .padding(.horizontal, horizontalPadding)
+            ParkingHeaderInfoView(
+                licensePlate: attributes.licensePlate,
+                zoneId: attributes.zoneId,
+                style: style
+            )
+            .padding(.horizontal, horizontalPadding)
         }
         
         DynamicIslandExpandedRegion(.bottom) {

@@ -26,19 +26,19 @@ struct ParkingLiveActivityView: View {
     }
     
     private var attributes: ParkingLiveActivityAttributes { context.attributes }
-    private var hasEndDate: Bool { attributes.endDate != nil }
+    private var hasEndDate: Bool { context.attributes.hasEndDate }
     
     private var topSection: some View {
         HStack(alignment: .top, spacing: 20) {
-            Image(.logo)
+            Image(.logoExpanded)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
             
-            VStack(alignment: .leading, spacing: 4) {
-                LicensePlateView(licensePlate: attributes.licensePlate, style: style)
-                
-                ZoneIdView(zoneId: attributes.zoneId, style: style)
-            }
+            ParkingHeaderInfoView(
+                licensePlate: attributes.licensePlate,
+                zoneId: attributes.zoneId,
+                style: style
+            )
         }
     }
     

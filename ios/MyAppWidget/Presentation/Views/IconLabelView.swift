@@ -18,7 +18,7 @@ struct IconLabelView: View {
     var body: some View {
         HStack(spacing: spacing) {
             Image(image)
-                .frame(width: 22, height: 22)
+                .framed()
             
             Text(text)
                 .lineLimit(1)
