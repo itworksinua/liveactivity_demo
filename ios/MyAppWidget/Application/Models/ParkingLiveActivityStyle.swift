@@ -11,6 +11,8 @@ enum ParkingLiveActivityStyle {
     case light
     case dark
     
+    var isDark: Bool { self == .dark }
+    
     var foregroundColor: Color {
         switch self {
         case .light: .appPrimary

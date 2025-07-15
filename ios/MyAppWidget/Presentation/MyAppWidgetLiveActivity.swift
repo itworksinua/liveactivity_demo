@@ -36,7 +36,7 @@ struct MyAppWidgetLiveActivity: Widget {
         let style: ParkingLiveActivityStyle = .dark
         
         DynamicIslandExpandedRegion(.leading) {
-            Logo()
+            Logo(size: .init(width: 30, height: 30))
                 .padding(.horizontal, horizontalPadding)
         }
         

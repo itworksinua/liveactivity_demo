@@ -33,6 +33,9 @@ struct ParkingBottomSectionView: View {
             
             endTimeView
         }
+        .applyIf(style.isDark) {
+            $0.frame(height: 45)
+        }
     }
     
     @ViewBuilder

@@ -21,6 +21,15 @@ extension View {
         }
     }
     
+    @ViewBuilder
+    func applyIf(_ condition: Bool, @ViewBuilder _ transform: (Self) -> some View) -> some View {
+        if condition {
+            transform(self)
+        } else {
+            self
+        }
+    }
+    
     func framed(size: CGSize = .init(width: 22, height: 22)) -> some View {
         self
             .frame(width: size.width, height: size.height)
