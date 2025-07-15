@@ -32,18 +32,12 @@ import UIKit
     
     private func startLiveActivity() {
         let labels: ParkingLiveActivityAttributes.Labels = .init(
-            currentDuration: "Тривалість",
-            remainingTime: "Залишилось",
-            totalDuration: "Загалом",
-            ended: "Кінець",
-            parkingEndedTitle: "Паркування завершено",
-            parkingEndedSubtitle: "Дякуємо, що скористались сервісом!"
+            ends: "Закінчується"
         )
         
         let model = ParkingLiveActivityModel(
             zoneId: "2.371",
             licensePlate: "AA627KT",
-            price: .init(amount: 1.5, currencySymbol: "€"),
             startDate: .now,
             endDate: .now.addingTimeInterval(140),
             labels: labels

@@ -11,7 +11,6 @@ import Foundation
 struct ParkingLiveActivityModel {
     let zoneId: String
     let licensePlate: String
-    let price: ParkingLiveActivityAttributes.Price
     let startDate: Date
     let endDate: Date
     let labels: ParkingLiveActivityAttributes.Labels
@@ -119,7 +118,6 @@ final class ParkingLiveActivityService {
         ParkingLiveActivityAttributes(
             zoneId: model.zoneId,
             licensePlate: model.licensePlate,
-            price: model.price,
             startDate: model.startDate,
             endDate: model.endDate,
             labels: model.labels
