@@ -34,7 +34,7 @@ struct ParkingLiveActivityView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.leading, 5)
             
-            VStack(alignment: .trailing, spacing: 4) {
+            VStack(alignment: .leading, spacing: 4) {
                 LicensePlateView(licensePlate: attributes.licensePlate, style: style)
                 
                 ZoneIdView(zoneId: attributes.zoneId, style: style)

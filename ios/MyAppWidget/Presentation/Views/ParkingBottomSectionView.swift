@@ -41,7 +41,9 @@ struct ParkingBottomSectionView: View {
             HStack(alignment: .bottom, spacing: 4) {
                 Text(labels.ends)
                     .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                     .customFont(size: 13, weight: .bold, color: foregroundColor)
+                    .padding(.bottom, 2)
                 
                 Text(end.formatted(date: .omitted, time: .shortened))
                     .customFont(size: 20, weight: .bold, color: .appBlue)

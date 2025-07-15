@@ -40,7 +40,7 @@ import UIKit
             zoneId: "2.371",
             licensePlate: "AA627KT",
             startDate: .now,
-//            endDate: .now.addingTimeInterval(140), //Optional
+            endDate: .now.addingTimeInterval(140), //Optional
             labels: labels
         )
         

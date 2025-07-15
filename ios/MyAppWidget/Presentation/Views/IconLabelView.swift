@@ -13,11 +13,12 @@ struct IconLabelView: View {
     var fontSize: Double = 16
     var fontWeight: Font.Weight = .bold
     var foregroundColor: Color = .appPrimary
-    var spacing: CGFloat = 8
+    var spacing: CGFloat = 5
     
     var body: some View {
         HStack(spacing: spacing) {
             Image(image)
+                .frame(width: 22, height: 22)
             
             Text(text)
                 .lineLimit(1)
