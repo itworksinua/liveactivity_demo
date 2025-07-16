@@ -12,7 +12,7 @@ struct TimerView: View {
     let context: ActivityViewContext<ParkingLiveActivityAttributes>
     var fontSize: CGFloat = 52
     var fontWeight: Font.Weight = .bold
-    var color: Color = .appPrimary
+    var color: Color = .appBlack
     var width: CGFloat = .infinity
     
     var body: some View {

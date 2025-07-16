@@ -15,8 +15,15 @@ enum ParkingLiveActivityStyle {
     
     var foregroundColor: Color {
         switch self {
-        case .light: .appPrimary
-        case .dark: .appBackground
+        case .light: .appBlack
+        case .dark: .appWhite
+        }
+    }
+    
+    var accentColor: Color {
+        switch self {
+        case .light: .appBlue
+        case .dark: .appPurpleLight
         }
     }
 }

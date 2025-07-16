@@ -12,10 +12,6 @@ struct LicensePlateView: View {
     let style: ParkingLiveActivityStyle
     
     var body: some View {
-        IconLabelView(
-            image: .licensePlateIcon,
-            text: licensePlate,
-            foregroundColor: style.foregroundColor
-        )
+        IconLabelView(image: .licensePlateIcon, text: licensePlate, style: style)
     }
 }

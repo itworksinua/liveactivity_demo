@@ -49,7 +49,7 @@ struct ParkingBottomSectionView: View {
                     .padding(.bottom, 2)
                 
                 Text(end.formatted(date: .omitted, time: .shortened))
-                    .customFont(size: 20, weight: .bold, color: .appBlue)
+                    .customFont(size: 20, weight: .bold, color: style.accentColor)
             }
             .padding(.bottom, 9)
         }
@@ -58,13 +58,19 @@ struct ParkingBottomSectionView: View {
     @ViewBuilder
     private var progressView: some View {
         if let end {
-            ProgressView(timerInterval: start ... end, countsDown: true)
-                .labelsHidden()
-                .progressViewStyle(.linear)
-                .tint(.appBlue)
-                .scaleEffect(y: 1.3)
-                .clipShape(.capsule(style: .continuous))
-                .padding(.leading, 5)
+            ZStack {
+                Capsule()
+                    .fill(.appPurpleLight)
+                    .frame(height: 5)
+                
+                ProgressView(timerInterval: start ... end, countsDown: true)
+                    .labelsHidden()
+                    .progressViewStyle(.linear)
+                    .tint(.appBlue)
+                    .scaleEffect(y: 1.3)
+                    .clipShape(.capsule(style: .continuous))
+            }
+            .padding(.leading, 5)
         }
     }
 }

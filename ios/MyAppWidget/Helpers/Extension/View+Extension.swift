@@ -10,7 +10,7 @@ import SwiftUI
 extension View {
     
     @ViewBuilder
-    func customFont(size: Double, weight: Font.Weight = .regular, color: Color? = .appPrimary) -> some View {
+    func customFont(size: Double, weight: Font.Weight = .regular, color: Color? = .appBlack) -> some View {
         if let color = color {
             self
                 .font(.system(size: size, weight: weight))

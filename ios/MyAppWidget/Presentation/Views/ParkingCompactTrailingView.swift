@@ -14,12 +14,12 @@ struct ParkingCompactTrailingView: View {
     var body: some View {
         if context.isStale {
             Text(context.attributes.labels.ended)
-                .customFont(size: 12, weight: .bold, color: .appBlue)
+                .customFont(size: 12, weight: .bold, color: .appPurpleLight)
         } else {
             TimerView(
                 context: context,
                 fontSize: 12,
-                color: .appBlue,
+                color: .appPurpleLight,
                 width: 60
             )
         }

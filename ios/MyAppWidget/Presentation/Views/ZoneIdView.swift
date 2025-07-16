@@ -12,10 +12,6 @@ struct ZoneIdView: View {
     let style: ParkingLiveActivityStyle
     
     var body: some View {
-        IconLabelView(
-            image: .zoneIdIcon,
-            text: zoneId,
-            foregroundColor: style.foregroundColor
-        )
+        IconLabelView(image: .zoneIdIcon, text: zoneId, style: style)
     }
 }
