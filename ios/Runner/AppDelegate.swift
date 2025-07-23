@@ -22,6 +22,12 @@ import UIKit
               return
           }
           
+#warning("Check this")
+          if call.method == "getLiveActivityPushToken" {
+              let token = LiveActivityTokenStorage.shared.getToken()
+              result(token)
+              return
+          }
           
           result(FlutterMethodNotImplemented)
       })

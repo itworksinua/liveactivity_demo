@@ -96,7 +96,8 @@ final class ParkingLiveActivityService {
         do {
             let activity = try Activity<ParkingLiveActivityAttributes>.request(
                 attributes: attributes,
-                content: content
+                content: content,
+                pushType: .token
             )
             
             observeLiveActivity(activity)
@@ -147,15 +148,25 @@ final class ParkingLiveActivityService {
         activityObservationTask = Task { @MainActor [weak self] in
             guard let self else { return }
             
-            for await state in activity.activityStateUpdates {
-                if state == .stale {
-                    end(for: activity.attributes.zoneId)
-                    print("🛑 Live Activity ended due to stale state: \(activity.id)")
-                    break
+            defer { cancelObservation() }
+            
+            await withTaskGroup(of: Void.self) { group in
+                group.addTask { @MainActor [weak self] in
+                    for await state in activity.activityStateUpdates {
+                        if state == .stale {
+                            self?.end(for: activity.attributes.zoneId)
+                            print("🛑 Live Activity ended due to stale state: \(activity.id)")
+                            break
+                        }
+                    }
+                }
+                
+                group.addTask {
+                    for await tokenData in activity.pushTokenUpdates {
+                        LiveActivityTokenStorage.shared.save(token: tokenData)
+                    }
                 }
             }
-            
-            cancelObservation()
         }
     }
     
