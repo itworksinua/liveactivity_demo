@@ -48,17 +48,23 @@ extension ParkingLiveActivityAttributes.State {
     }
     
     private struct Period: Codable, Hashable {
-        let start: Date
-        let end: Date?
+        let start: TimeInterval
+        let end: TimeInterval?
     }
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         
         if let value = try container.decodeIfPresent(Period.self, forKey: .active) {
-            self = .active(start: value.start, end: value.end)
+            self = .active(
+                start: Date(timeIntervalSince1970: value.start),
+                end: value.end.map { Date(timeIntervalSince1970: $0) }
+            )
         } else if let value = try container.decodeIfPresent(Period.self, forKey: .reservation) {
-            self = .reservation(start: value.start, end: value.end)
+            self = .reservation(
+                start: Date(timeIntervalSince1970: value.start),
+                end: value.end.map { Date(timeIntervalSince1970: $0) }
+            )
         } else {
             throw DecodingError.dataCorrupted(
                 .init(codingPath: decoder.codingPath, debugDescription: "Unknown State")
@@ -72,10 +78,16 @@ extension ParkingLiveActivityAttributes.State {
         let period: Period
         switch self {
         case let .active(start, end):
-            period = Period(start: start, end: end)
+            period = Period(
+                start: start.timeIntervalSince1970,
+                end: end?.timeIntervalSince1970
+            )
             try container.encode(period, forKey: .active)
         case let .reservation(start, end):
-            period = Period(start: start, end: end)
+            period = Period(
+                start: start.timeIntervalSince1970,
+                end: end?.timeIntervalSince1970
+            )
             try container.encode(period, forKey: .reservation)
         }
     }
