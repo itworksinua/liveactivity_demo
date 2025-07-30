@@ -126,6 +126,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		185F3FBF2E3A9B6400DF7147 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				84BEFD2A2E0DE76200F9931E /* ParkingLiveActivityService.swift */,
+				183315AC2E3117FC005002CB /* LiveActivityTokenStorage.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
 		331C8082294A63A400263BE5 /* RunnerTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -201,8 +210,7 @@
 				1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */,
 				74858FAE1ED2DC5600515810 /* AppDelegate.swift */,
 				74858FAD1ED2DC5600515810 /* Runner-Bridging-Header.h */,
-				84BEFD2A2E0DE76200F9931E /* ParkingLiveActivityService.swift */,
-				183315AC2E3117FC005002CB /* LiveActivityTokenStorage.swift */,
+				185F3FBF2E3A9B6400DF7147 /* Services */,
 			);
 			path = Runner;
 			sourceTree = "<group>";
