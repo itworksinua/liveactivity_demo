@@ -9,14 +9,20 @@ import SwiftUI
 import WidgetKit
 
 struct ParkingBottomSectionView: View {
+    @State private var leadingWidth: CGFloat = .zero
+    
     let context: ActivityViewContext<ParkingLiveActivityAttributes>
     let style: ParkingLiveActivityStyle
     
+    
     var body: some View {
-        VStack(spacing: 5) {
+        VStack(spacing: isReservationLightStyle ?  15 : 5) {
             topSection
             
             progressView
+        }
+        .measureSize { size in
+            leadingWidth = size.width * 0.6
         }
     }
     
@@ -26,6 +32,8 @@ struct ParkingBottomSectionView: View {
     private var labels: ParkingLiveActivityAttributes.Labels { attributes.labels }
     private var start: Date { state.start }
     private var end: Date? { context.state.end }
+    private var isActiveState: Bool { state.isActive }
+    private var isReservationLightStyle: Bool { !isActiveState && style == .light }
     
     @ViewBuilder
     private var topSection: some View {
@@ -42,17 +50,19 @@ struct ParkingBottomSectionView: View {
                 
                 Text(start.formatted(as: .dateWithDots))
                     .customFont(size: 38, weight: .bold, color: foregroundColor)
+                    .minimumScaleFactor(0.75)
                     .applyIf(style.isDark) {
                         $0.frame(height: 33)
                     }
             }
+            .frame(width: leadingWidth)
             .layoutPriority(1)
             
-            VStack(spacing: .zero) {
+            VStack(alignment: .trailing, spacing: .zero) {
                 startTimeView
                 
                 endTimeView
-                    .padding(.bottom, 4)
+                    .padding(.bottom, isReservationLightStyle ?  4 : .zero)
             }
         }
     }
@@ -70,7 +80,7 @@ struct ParkingBottomSectionView: View {
     }
     
     private var startTimeView: some View {
-        timeLabelView(title: labels.ends, time: start)
+        timeLabelView(title: labels.start, time: start)
     }
     
     @ViewBuilder
@@ -96,7 +106,7 @@ struct ParkingBottomSectionView: View {
     
     @ViewBuilder
     private var progressView: some View {
-        if state.isActive, let end {
+        if isActiveState, let end {
             ZStack {
                 Capsule()
                     .fill(.appPurpleLight)

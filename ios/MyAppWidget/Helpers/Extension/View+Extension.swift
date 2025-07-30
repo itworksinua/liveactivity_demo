@@ -35,3 +35,32 @@ extension View {
             .frame(width: size.width, height: size.height)
     }
 }
+
+// MARK: - measureSize
+
+private struct SizeMeasuringView: View {
+    var onChange: (CGSize) -> Void
+    
+    var body: some View {
+        GeometryReader { proxy in
+            Color.clear
+                .preference(key: SizePreferenceKey.self, value: proxy.size)
+        }
+        .onPreferenceChange(SizePreferenceKey.self, perform: onChange)
+    }
+}
+
+private struct SizePreferenceKey: PreferenceKey {
+    static var defaultValue: CGSize = .zero
+    
+    static func reduce(value: inout CGSize, nextValue: () -> CGSize) {
+        value = nextValue()
+    }
+}
+
+extension View {
+    func measureSize(_ onChange: @escaping (CGSize) -> Void) -> some View {
+        background(SizeMeasuringView(onChange: onChange))
+    }
+}
+
