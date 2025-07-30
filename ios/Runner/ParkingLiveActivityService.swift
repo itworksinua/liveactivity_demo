@@ -11,8 +11,7 @@ import Foundation
 struct ParkingLiveActivityModel {
     let zoneId: String
     let licensePlate: String
-    let startDate: Date
-    var endDate: Date? = nil
+    let type: ParkingLiveActivityAttributes.ActivityType
     let labels: ParkingLiveActivityAttributes.Labels
 }
 
@@ -73,8 +72,8 @@ final class ParkingLiveActivityService {
     
     private func performSync(with model: ParkingLiveActivityModel) async {
         let attributes = makeAttributes(from: model)
-        let delayedStaleDate = model.endDate?.addingTimeInterval(1)
-        let content = makeContent(with: delayedStaleDate)
+        let staleDate = model.type.end?.addingTimeInterval(1)
+        let content = makeContent(from: model.type, staleDate: staleDate)
         
         restoreActivityIfNeeded(for: model.zoneId)
         
@@ -115,7 +114,10 @@ final class ParkingLiveActivityService {
         }
     }
     
-    private func update(_ activity: Activity<ParkingLiveActivityAttributes>, with content: ActivityContent<ParkingLiveActivityAttributes.ContentState>) async {
+    private func update(
+        _ activity: Activity<ParkingLiveActivityAttributes>,
+        with content: ActivityContent<ParkingLiveActivityAttributes.ContentState>
+    ) async {
         await activity.update(content)
         print("✅ Live Activity updated: \(activity.id)")
     }
@@ -124,15 +126,16 @@ final class ParkingLiveActivityService {
         ParkingLiveActivityAttributes(
             zoneId: model.zoneId,
             licensePlate: model.licensePlate,
-            startDate: model.startDate,
-            endDate: model.endDate,
             labels: model.labels
         )
     }
     
-    private func makeContent(with staleDate: Date?) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
-        let state = ParkingLiveActivityAttributes.ContentState()
-        return ActivityContent(state: state, staleDate: staleDate)
+    private func makeContent(
+        from type: ParkingLiveActivityAttributes.ActivityType,
+        staleDate: Date?
+    ) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
+        let contentState = ParkingLiveActivityAttributes.ContentState(type: type)
+        return ActivityContent(state: contentState, staleDate: staleDate)
     }
     
     private func existingActivity(for zoneId: String) -> Activity<ParkingLiveActivityAttributes>? {

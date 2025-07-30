@@ -63,17 +63,24 @@ extension ParkingLiveActivityAttributes {
         ParkingLiveActivityAttributes(
             zoneId: "2.371",
             licensePlate: "AA627KT",
-            startDate: .now,
-//            endDate: .now.addingTimeInterval(5220), // 1h 27m
-            endDate: .now.addingTimeInterval(80), // 80 sec
             labels: .init()
+        )
+    }
+    
+    static var previewContentState: ContentState {
+        ContentState(
+            type: .active(
+                start: .now,
+//                end: .now.addingTimeInterval(5220), // 1h 27m
+                end: .now.addingTimeInterval(80) // 80 sec
+            )
         )
     }
 }
 
 extension ParkingLiveActivityAttributes.ContentState {
     static var empty: ParkingLiveActivityAttributes.ContentState {
-        ParkingLiveActivityAttributes.ContentState()
+        ParkingLiveActivityAttributes.previewContentState
     }
 }
 

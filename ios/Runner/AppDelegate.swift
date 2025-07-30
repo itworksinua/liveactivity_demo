@@ -42,11 +42,15 @@ import UIKit
             ended: "Кінець"
         )
         
+        let type: ParkingLiveActivityAttributes.ActivityType = .active(
+            start: .now,
+            end: .now.addingTimeInterval(140) ///Optional
+        )
+        
         let model = ParkingLiveActivityModel(
             zoneId: "2.371",
             licensePlate: "AA627KT",
-            startDate: .now,
-            endDate: .now.addingTimeInterval(140), //Optional
+            type: type,
             labels: labels
         )
         

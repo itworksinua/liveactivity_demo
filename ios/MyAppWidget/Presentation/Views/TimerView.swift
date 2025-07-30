@@ -28,6 +28,6 @@ struct TimerView: View {
         .frame(width: width)
     }
     
-    private var start: Date { context.attributes.startDate }
-    private var end: Date? { context.attributes.endDate }
+    private var start: Date { context.state.type.start }
+    private var end: Date? { context.state.type.end }
 }
