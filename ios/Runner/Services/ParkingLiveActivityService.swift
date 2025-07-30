@@ -184,6 +184,14 @@ final class ParkingLiveActivityService {
         pushToStartObservationTask = Task.detached {
             for await tokenData in Activity<ParkingLiveActivityAttributes>.pushToStartTokenUpdates {
                 LiveActivityTokenStorage.shared.save(token: tokenData)
+                
+                guard let activity = Activity<ParkingLiveActivityAttributes>.activities.first else { continue }
+                
+                await MainActor.run { [weak self] in
+                    self?.activity = activity
+                    self?.observeLiveActivity(activity)
+                    print("🔁 Restored activity from pushToStartToken: \(activity.id)")
+                }
             }
         }
     }
