@@ -48,9 +48,7 @@ struct ParkingBottomSectionView: View {
             VStack(alignment: .leading, spacing: 2) {
                 IconLabelView(image: .calendarClockIcon, text: labels.parkingStarts, fontSize: 13, style: style)
                 
-                Text(start.formatted(as: .dateWithDots))
-                    .customFont(size: 38, weight: .bold, color: foregroundColor)
-                    .minimumScaleFactor(0.75)
+                DateView(context: context, color: foregroundColor)
                     .applyIf(style.isDark) {
                         $0.frame(height: 33)
                     }
@@ -64,6 +62,7 @@ struct ParkingBottomSectionView: View {
                 timeLabel(title: labels.ends, time: end)
                     .padding(.bottom, isReservationLightStyle ?  4 : .zero)
             }
+            .frame(maxWidth: .infinity, alignment: .trailing)
         }
     }
     

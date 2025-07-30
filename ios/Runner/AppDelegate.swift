@@ -39,7 +39,7 @@ import UIKit
     private func startLiveActivity() {
         let labels: ParkingLiveActivityAttributes.Labels = .init(
             start: "Початок",
-            ends: "Закінчується в",
+            ends: "Кінець",
             ended: "Кінець",
             parkingStarts: "Паркування починається"
         )
