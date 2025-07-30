@@ -59,9 +59,9 @@ struct ParkingBottomSectionView: View {
             .layoutPriority(1)
             
             VStack(alignment: .trailing, spacing: .zero) {
-                startTimeView
+                timeLabel(title: labels.start, time: start)
                 
-                endTimeView
+                timeLabel(title: labels.ends, time: end)
                     .padding(.bottom, isReservationLightStyle ?  4 : .zero)
             }
         }
@@ -71,7 +71,7 @@ struct ParkingBottomSectionView: View {
         HStack(alignment: .bottom) {
             TimerView(context: context, color: foregroundColor)
             
-            endTimeView
+            timeLabel(title: labels.ends, time: end)
                 .padding(.bottom, 9)
         }
         .applyIf(style.isDark) {
@@ -79,28 +79,20 @@ struct ParkingBottomSectionView: View {
         }
     }
     
-    private var startTimeView: some View {
-        timeLabelView(title: labels.start, time: start)
-    }
-    
     @ViewBuilder
-    private var endTimeView: some View {
-        if let end {
-            timeLabelView(title: labels.ends, time: end)
-        }
-    }
-    
-    private func timeLabelView(title: String, time: Date) -> some View {
-        HStack(alignment: .bottom, spacing: 4) {
-            Text(title)
-                .lineLimit(1)
-                .minimumScaleFactor(0.75)
-                .customFont(size: 13, weight: .bold, color: foregroundColor)
-                .padding(.bottom, 2)
-            
-            Text(time.formatted(date: .omitted, time: .shortened))
-                .customFont(size: 20, weight: .bold, color: style.accentColor)
-                .layoutPriority(1)
+    private func timeLabel(title: String, time: Date?) -> some View {
+        if let time {
+            HStack(alignment: .bottom, spacing: 4) {
+                Text(title)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
+                    .customFont(size: 13, weight: .bold, color: foregroundColor)
+                    .padding(.bottom, 2)
+                
+                Text(time.formatted(date: .omitted, time: .shortened))
+                    .customFont(size: 20, weight: .bold, color: style.accentColor)
+                    .layoutPriority(1)
+            }
         }
     }
     
