@@ -20,8 +20,11 @@ final class ParkingLiveActivityService {
     
     private var activity: Activity<ParkingLiveActivityAttributes>?
     private var activityObservationTask: Task<Void, Never>?
+    private var pushToStartObservationTask: Task<Void, Never>?
     
-    private init() {}
+    private init() {
+        observePushToStartToken()
+    }
     
     var isLiveActivityEnabled: Bool {
         ActivityAuthorizationInfo().areActivitiesEnabled
@@ -173,6 +176,14 @@ final class ParkingLiveActivityService {
                         LiveActivityTokenStorage.shared.save(token: tokenData)
                     }
                 }
+            }
+        }
+    }
+    
+    private func observePushToStartToken() {
+        pushToStartObservationTask = Task.detached {
+            for await tokenData in Activity<ParkingLiveActivityAttributes>.pushToStartTokenUpdates {
+                LiveActivityTokenStorage.shared.save(token: tokenData)
             }
         }
     }
