@@ -46,7 +46,8 @@ final class ParkingLiveActivityService {
             guard let self else { return }
             
             await activity?.end(nil, dismissalPolicy: .immediate)
-            activity = nil
+            
+            resetActivityState()
             
             print("🧹 Live Activity ended for zone: \(zoneId)")
         }
@@ -61,9 +62,13 @@ final class ParkingLiveActivityService {
                 print("🧹 Ended activity: \(activity.id)")
             }
             
-            activity = nil
-            cancelObservation()
+            resetActivityState()
         }
+    }
+    
+    private func resetActivityState() {
+        activity = nil
+        cancelObservation()
     }
     
     private func performSync(with model: ParkingLiveActivityModel) async {
