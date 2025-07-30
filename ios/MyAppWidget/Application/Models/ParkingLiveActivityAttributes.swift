@@ -18,8 +18,8 @@ struct ParkingLiveActivityAttributes: ActivityAttributes {
 
 extension ParkingLiveActivityAttributes {
     enum State: Codable, Hashable {
-        case reservation(start: Date, end: Date?)
-        case active(start: Date, end: Date?)
+        case reservation(start: Date, end: Date? = nil)
+        case active(start: Date, end: Date? = nil)
     }
     
     struct Labels: Codable, Hashable {
