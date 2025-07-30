@@ -11,7 +11,7 @@ import Foundation
 struct ParkingLiveActivityModel {
     let zoneId: String
     let licensePlate: String
-    let type: ParkingLiveActivityAttributes.ActivityType
+    let state: ParkingLiveActivityAttributes.State
     let labels: ParkingLiveActivityAttributes.Labels
 }
 
@@ -72,8 +72,8 @@ final class ParkingLiveActivityService {
     
     private func performSync(with model: ParkingLiveActivityModel) async {
         let attributes = makeAttributes(from: model)
-        let staleDate = model.type.end?.addingTimeInterval(1)
-        let content = makeContent(from: model.type, staleDate: staleDate)
+        let staleDate = model.state.end?.addingTimeInterval(1)
+        let content = makeContent(from: model.state, staleDate: staleDate)
         
         restoreActivityIfNeeded(for: model.zoneId)
         
@@ -131,10 +131,10 @@ final class ParkingLiveActivityService {
     }
     
     private func makeContent(
-        from type: ParkingLiveActivityAttributes.ActivityType,
+        from state: ParkingLiveActivityAttributes.State,
         staleDate: Date?
     ) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
-        return ActivityContent(state: type, staleDate: staleDate)
+        return ActivityContent(state: state, staleDate: staleDate)
     }
     
     private func existingActivity(for zoneId: String) -> Activity<ParkingLiveActivityAttributes>? {
