@@ -38,11 +38,13 @@ import UIKit
     
     private func startLiveActivity() {
         let labels: ParkingLiveActivityAttributes.Labels = .init(
+            start: "Початок",
             ends: "Закінчується в",
-            ended: "Кінець"
+            ended: "Кінець",
+            parkingStarts: "Паркування починається"
         )
         
-        let state: ParkingLiveActivityAttributes.State = .active(
+        let state: ParkingLiveActivityAttributes.State = .reservation(
             start: .now,
             end: .now.addingTimeInterval(140) ///Optional
         )

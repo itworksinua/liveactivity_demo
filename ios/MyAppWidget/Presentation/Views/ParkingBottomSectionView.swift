@@ -22,42 +22,81 @@ struct ParkingBottomSectionView: View {
     
     private var attributes: ParkingLiveActivityAttributes { context.attributes }
     private var foregroundColor: Color { style.foregroundColor }
+    private var state: ParkingLiveActivityAttributes.State { context.state }
     private var labels: ParkingLiveActivityAttributes.Labels { attributes.labels }
-    private var start: Date { context.state.start }
+    private var start: Date { state.start }
     private var end: Date? { context.state.end }
     
-    
+    @ViewBuilder
     private var topSection: some View {
+        switch state {
+        case .reservation: topReservationSection
+        case .active: topActiveSection
+        }
+    }
+    
+    private var topReservationSection: some View {
+        HStack(alignment: .bottom) {
+            VStack(alignment: .leading, spacing: 2) {
+                IconLabelView(image: .calendarClockIcon, text: labels.parkingStarts, fontSize: 13, style: style)
+                
+                Text(start.formatted(as: .dateWithDots))
+                    .customFont(size: 38, weight: .bold, color: foregroundColor)
+                    .applyIf(style.isDark) {
+                        $0.frame(height: 33)
+                    }
+            }
+            .layoutPriority(1)
+            
+            VStack(spacing: .zero) {
+                startTimeView
+                
+                endTimeView
+                    .padding(.bottom, 4)
+            }
+        }
+    }
+    
+    private var topActiveSection: some View {
         HStack(alignment: .bottom) {
             TimerView(context: context, color: foregroundColor)
             
             endTimeView
+                .padding(.bottom, 9)
         }
         .applyIf(style.isDark) {
             $0.frame(height: 45)
         }
     }
     
+    private var startTimeView: some View {
+        timeLabelView(title: labels.ends, time: start)
+    }
+    
     @ViewBuilder
     private var endTimeView: some View {
         if let end {
-            HStack(alignment: .bottom, spacing: 4) {
-                Text(labels.ends)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.75)
-                    .customFont(size: 13, weight: .bold, color: foregroundColor)
-                    .padding(.bottom, 2)
-                
-                Text(end.formatted(date: .omitted, time: .shortened))
-                    .customFont(size: 20, weight: .bold, color: style.accentColor)
-            }
-            .padding(.bottom, 9)
+            timeLabelView(title: labels.ends, time: end)
+        }
+    }
+    
+    private func timeLabelView(title: String, time: Date) -> some View {
+        HStack(alignment: .bottom, spacing: 4) {
+            Text(title)
+                .lineLimit(1)
+                .minimumScaleFactor(0.75)
+                .customFont(size: 13, weight: .bold, color: foregroundColor)
+                .padding(.bottom, 2)
+            
+            Text(time.formatted(date: .omitted, time: .shortened))
+                .customFont(size: 20, weight: .bold, color: style.accentColor)
+                .layoutPriority(1)
         }
     }
     
     @ViewBuilder
     private var progressView: some View {
-        if let end {
+        if state.isActive, let end {
             ZStack {
                 Capsule()
                     .fill(.appPurpleLight)

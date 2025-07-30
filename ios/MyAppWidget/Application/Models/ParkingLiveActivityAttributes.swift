@@ -23,15 +23,21 @@ extension ParkingLiveActivityAttributes {
     }
     
     struct Labels: Codable, Hashable {
+        let start: String
         let ends: String
         let ended: String
+        let parkingStarts: String
         
         init(
+            start: String = "Start",
             ends: String = "Ends",
-            ended: String = "Ended"
+            ended: String = "Ended",
+            parkingStarts: String = "Parking starts"
         ) {
+            self.start = start
             self.ends = ends
             self.ended = ended
+            self.parkingStarts = parkingStarts
         }
     }
 }
