@@ -134,8 +134,7 @@ final class ParkingLiveActivityService {
         from type: ParkingLiveActivityAttributes.ActivityType,
         staleDate: Date?
     ) -> ActivityContent<ParkingLiveActivityAttributes.ContentState> {
-        let contentState = ParkingLiveActivityAttributes.ContentState(type: type)
-        return ActivityContent(state: contentState, staleDate: staleDate)
+        return ActivityContent(state: type, staleDate: staleDate)
     }
     
     private func existingActivity(for zoneId: String) -> Activity<ParkingLiveActivityAttributes>? {

@@ -9,9 +9,7 @@ import ActivityKit
 import Foundation
 
 struct ParkingLiveActivityAttributes: ActivityAttributes {
-    struct ContentState: Codable, Hashable {
-        let type: ActivityType
-    }
+    typealias ContentState = ActivityType
     
     let zoneId: String
     let licensePlate: String
@@ -24,41 +22,39 @@ extension ParkingLiveActivityAttributes {
         case active(start: Date, end: Date?)
         
         private enum CodingKeys: String, CodingKey {
-            case type
-            case start
-            case end
+            case reservation, active
         }
         
-        private enum StateType: String, Codable {
-            case reservation
-            case active
+        private struct Period: Codable, Hashable {
+            let start: Date
+            let end: Date?
         }
         
         init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
-            let type = try container.decode(StateType.self, forKey: .type)
-            let start = try container.decode(Date.self, forKey: .start)
-            let end = try container.decodeIfPresent(Date.self, forKey: .end)
             
-            switch type {
-            case .reservation:
-                self = .reservation(start: start, end: end)
-            case .active:
-                self = .active(start: start, end: end)
+            if let value = try container.decodeIfPresent(Period.self, forKey: .active) {
+                self = .active(start: value.start, end: value.end)
+            } else if let value = try container.decodeIfPresent(Period.self, forKey: .reservation) {
+                self = .reservation(start: value.start, end: value.end)
+            } else {
+                throw DecodingError.dataCorrupted(
+                    .init(codingPath: decoder.codingPath, debugDescription: "Unknown ActivityType")
+                )
             }
         }
         
         func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
+            
+            let period: Period
             switch self {
-            case let .reservation(start, end):
-                try container.encode(StateType.reservation, forKey: .type)
-                try container.encode(start, forKey: .start)
-                try container.encodeIfPresent(end, forKey: .end)
             case let .active(start, end):
-                try container.encode(StateType.active, forKey: .type)
-                try container.encode(start, forKey: .start)
-                try container.encodeIfPresent(end, forKey: .end)
+                period = Period(start: start, end: end)
+                try container.encode(period, forKey: .active)
+            case let .reservation(start, end):
+                period = Period(start: start, end: end)
+                try container.encode(period, forKey: .reservation)
             }
         }
     }
@@ -80,25 +76,26 @@ extension ParkingLiveActivityAttributes {
 extension ParkingLiveActivityAttributes.ActivityType {
     var start: Date {
         switch self {
-        case .reservation(let start, _), .active(let start, _): return start
+        case .reservation(let start, _), .active(let start, _):
+            return start
         }
     }
     
     var end: Date? {
         switch self {
-        case .reservation(_, let end), .active(_, let end): return end
+        case .reservation(_, let end), .active(_, let end):
+            return end
         }
     }
     
     var isActive: Bool {
-        if case .active = self { return true }
-        return false
+        switch self {
+        case .active: true
+        case .reservation: false
+        }
     }
     
     var hasEndDate: Bool {
-        switch self {
-        case .reservation(_, let end), .active(_, let end):
-            return end != nil
-        }
+        return end != nil
     }
 }

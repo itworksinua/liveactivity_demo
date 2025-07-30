@@ -26,7 +26,7 @@ struct ParkingLiveActivityView: View {
     }
     
     private var attributes: ParkingLiveActivityAttributes { context.attributes }
-    private var hasEndDate: Bool { context.state.type.hasEndDate }
+    private var hasEndDate: Bool { context.state.hasEndDate }
     
     private var topSection: some View {
         HStack(alignment: .top, spacing: 20) {

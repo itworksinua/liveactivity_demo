@@ -68,18 +68,15 @@ extension ParkingLiveActivityAttributes {
     }
     
     static var previewContentState: ContentState {
-        ContentState(
-            type: .active(
-                start: .now,
-//                end: .now.addingTimeInterval(5220), // 1h 27m
-                end: .now.addingTimeInterval(80) // 80 sec
-            )
+        .active(
+            start: .now,
+            end: .now.addingTimeInterval(80) // 80 sec
         )
     }
 }
 
 extension ParkingLiveActivityAttributes.ContentState {
-    static var empty: ParkingLiveActivityAttributes.ContentState {
+    static var active: ParkingLiveActivityAttributes.ContentState {
         ParkingLiveActivityAttributes.previewContentState
     }
 }
@@ -87,5 +84,5 @@ extension ParkingLiveActivityAttributes.ContentState {
 #Preview("Lock Screen", as: .content, using: ParkingLiveActivityAttributes.preview) {
     MyAppWidgetLiveActivity()
 } contentStates: {
-    ParkingLiveActivityAttributes.ContentState.empty
+    .active
 }

@@ -23,8 +23,8 @@ struct ParkingBottomSectionView: View {
     private var attributes: ParkingLiveActivityAttributes { context.attributes }
     private var foregroundColor: Color { style.foregroundColor }
     private var labels: ParkingLiveActivityAttributes.Labels { attributes.labels }
-    private var start: Date { context.state.type.start }
-    private var end: Date? { context.state.type.end }
+    private var start: Date { context.state.start }
+    private var end: Date? { context.state.end }
     
     
     private var topSection: some View {
