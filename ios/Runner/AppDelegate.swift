@@ -16,7 +16,7 @@ import UIKit
           (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
           // This method is invoked on the UI thread.
           // Handle battery messages.
-          if call.method == "startActivity"  {
+          if call.method == "startActivity" {
               self.startLiveActivity()
               result(nil)
               return

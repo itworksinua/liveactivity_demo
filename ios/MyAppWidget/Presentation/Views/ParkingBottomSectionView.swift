@@ -53,7 +53,7 @@ struct ParkingBottomSectionView: View {
                         $0.frame(height: 33)
                     }
             }
-            .frame(width: leadingWidth)
+            .frame(width: leadingWidth, alignment: .leading)
             .layoutPriority(1)
             
             VStack(alignment: .trailing, spacing: .zero) {
