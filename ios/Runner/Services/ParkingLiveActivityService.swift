@@ -163,9 +163,16 @@ final class ParkingLiveActivityService {
             await withTaskGroup(of: Void.self) { group in
                 group.addTask { @MainActor [weak self] in
                     for await state in activity.activityStateUpdates {
-                        if state == .stale {
+                        switch state {
+                        case .stale:
+                            print("🛑 Live Activity became stale: \(activity.id)")
                             self?.end(for: activity.attributes.zoneId)
-                            print("🛑 Live Activity ended due to stale state: \(activity.id)")
+                            
+                        case .ended, .dismissed:
+                            print("🧹 Live Activity ended externally (push/system): \(activity.id)")
+                            self?.resetActivityState()
+                            
+                        default:
                             break
                         }
                     }
