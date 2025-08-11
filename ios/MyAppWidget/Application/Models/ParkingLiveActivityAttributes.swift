@@ -61,10 +61,10 @@ extension ParkingLiveActivityAttributes.State {
                 end: value.end.map { Date(timeIntervalSince1970: $0) }
             )
         } else if let value = try container.decodeIfPresent(Period.self, forKey: .reservation) {
-            self = .reservation(
-                start: Date(timeIntervalSince1970: value.start),
-                end: value.end.map { Date(timeIntervalSince1970: $0) }
-            )
+            let start = Date(timeIntervalSince1970: value.start)
+            let end = value.end.map { Date(timeIntervalSince1970: $0) }
+            
+            self = Self.createActualState(start: start, end: end)
         } else {
             throw DecodingError.dataCorrupted(
                 .init(codingPath: decoder.codingPath, debugDescription: "Unknown State")
@@ -90,6 +90,12 @@ extension ParkingLiveActivityAttributes.State {
             )
             try container.encode(period, forKey: .reservation)
         }
+    }
+    
+    private static func createActualState(start: Date, end: Date?) -> ParkingLiveActivityAttributes.State {
+        Date.now >= start
+        ? .active(start: start, end: end)
+        : .reservation(start: start, end: end)
     }
 }
 
