@@ -24,7 +24,7 @@ import UIKit
           
 #warning("Check this")
           if call.method == "getLiveActivityPushToken" {
-              let token = LiveActivityTokenStorage.shared.getToken()
+              let token = LiveActivityTokenStorage.shared.getTokensForServer()
               result(token)
               return
           }

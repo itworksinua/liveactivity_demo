@@ -180,7 +180,7 @@ final class ParkingLiveActivityService {
                 
                 group.addTask {
                     for await tokenData in activity.pushTokenUpdates {
-                        LiveActivityTokenStorage.shared.save(token: tokenData)
+                        LiveActivityTokenStorage.shared.savePushTokenUpdates(tokenData)
                     }
                 }
             }
@@ -190,7 +190,7 @@ final class ParkingLiveActivityService {
     private func observePushToStartToken() {
         pushToStartObservationTask = Task.detached {
             for await tokenData in Activity<ParkingLiveActivityAttributes>.pushToStartTokenUpdates {
-                LiveActivityTokenStorage.shared.save(token: tokenData)
+                LiveActivityTokenStorage.shared.savePushToStartToken(tokenData)
                 
                 guard let activity = Activity<ParkingLiveActivityAttributes>.activities.first else { continue }
                 
