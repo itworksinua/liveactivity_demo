@@ -83,11 +83,11 @@ import UIKit
     // Call this method where the update token is received
     private func sendUpdateTokenToServer(_ token: String, url: String, authorization: String) {
         var request = URLRequest(url: url)
-        request.httpMethod = "POST"
+        request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.setValue("Bearer \(authorization)", forHTTPHeaderField: "Authorization")
         //refreshActivityToken
-        let postData: [String: Any] = ["refreshActivityToken": "token"] // Replace with your data
+        let postData: [String: Any] = ["refreshActivityToken": "token"]
         do {
             request.httpBody = try JSONSerialization.data(withJSONObject: postData, options: [])
         } catch {
@@ -104,7 +104,6 @@ import UIKit
                     return
                 }
                 
-                // Process the response data
                 print("Response data: \(String(data: data, encoding: .utf8) ?? "N/A")")
                 
             } catch {
