@@ -13,25 +13,34 @@ final class TokenSyncService {
     private var authorization: String?
     private var serverURL: URL?
     
+    private let suiteName = "group.com.itworksinua.liveactivity"
+    private let authKey = "server.authorization"
+    private let urlKey = "server.url"
+    
     private init() {}
     
     func configure(authorization: String, url: String) {
         self.authorization = authorization
         self.serverURL = URL(string: url)
-        print("🔧 TokenSyncService configured with URL: \(url)")
+        
+        if let defaults = UserDefaults(suiteName: suiteName) {
+            defaults.set(authorization, forKey: authKey)
+            defaults.set(url, forKey: urlKey)
+        }
+        print("🔧 TokenSyncService configured & persisted: \(url)")
     }
     
     func syncToken(_ token: String, tokenType: TokenType) {
-        guard
-            let authorization = authorization,
-            let serverURL = serverURL
-        else {
-            print("⚠️ TokenSyncService not configured. Call configure(authorization:url:) first")
+        let auth: String? = authorization ?? UserDefaults(suiteName: suiteName)?.string(forKey: authKey)
+        let endpoint: URL? = serverURL ?? UserDefaults(suiteName: suiteName)?.string(forKey: urlKey).flatMap(URL.init)
+        
+        guard let auth, let endpoint else {
+            print("⚠️ TokenSyncService: no authorization or URL (memory & defaults empty)")
             return
         }
         
         Task {
-            await sendTokenToServer(token, tokenType: tokenType, url: serverURL, authorization: authorization)
+            await sendTokenToServer(token, tokenType: tokenType, url: endpoint, authorization: auth)
         }
     }
     
