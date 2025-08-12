@@ -4,6 +4,7 @@ import UIKit
 @main
 @objc class AppDelegate: FlutterAppDelegate {
     private let liveActivityService: ParkingLiveActivityService = .shared
+    private let tokenSyncService: TokenSyncService = .shared
     
   override func application(
     _ application: UIApplication,
@@ -22,17 +23,11 @@ import UIKit
               return
           }
           
-          if call.method == "getLiveActivityPushToken" {
-              let token = LiveActivityTokenStorage.shared.getTokensForServer()
-              result(token)
-              return
-          }
-          
           if call.method == "sendRequestDetails" {
               if let arg = call.arguments as? [String : Any],
                  let authorization = arg["authorization"] as? String,
-                 let url = arg["url"] as? String{
-                  self.saveRequestDetails(authorization, url: url)
+                 let url = arg["url"] as? String {
+                  self.configureTokenSync(authorization: authorization, url: url)
               }
               result(nil)
               return
@@ -76,39 +71,9 @@ import UIKit
         liveActivityService.endAll()
     }
     
-    func saveRequestDetails(_ authorization: String, url: String) {
-        // save these two strings for later usage
-    }
-    
-    // Call this method where the update token is received
-    private func sendUpdateTokenToServer(_ token: String, url: String, authorization: String) {
-        var request = URLRequest(url: url)
-        request.httpMethod = "PATCH"
-        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(authorization)", forHTTPHeaderField: "Authorization")
-        //refreshActivityToken
-        let postData: [String: Any] = ["refreshActivityToken": "token"]
-        do {
-            request.httpBody = try JSONSerialization.data(withJSONObject: postData, options: [])
-        } catch {
-            print("Error creating JSON data: \(error)")
-            return
-        }
-        Task {
-            do {
-                let (data, response) = try await URLSession.shared.data(for: request)
-                
-                guard let httpResponse = response as? HTTPURLResponse,
-                      (200...299).contains(httpResponse.statusCode) else {
-                    print("Invalid response or status code.")
-                    return
-                }
-                
-                print("Response data: \(String(data: data, encoding: .utf8) ?? "N/A")")
-                
-            } catch {
-                print("Error during API call: \(error.localizedDescription)")
-            }
-        }
+    private func configureTokenSync(authorization: String, url: String) {
+        tokenSyncService.configure(authorization: authorization, url: url)
+        tokenSyncService.syncAllTokens()
+        print("🔧 Token sync configured and existing tokens synced")
     }
 }
