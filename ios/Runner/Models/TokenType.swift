@@ -13,7 +13,7 @@ enum TokenType: String, CaseIterable {
     
     var serverKey: String {
         switch self {
-        case .pushToStart: "pushToStartToken"
+        case .pushToStart: "startActivityToken"
         case .pushUpdates: "refreshActivityToken"
         }
     }
