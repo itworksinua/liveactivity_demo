@@ -60,7 +60,7 @@ final class TokenSyncService {
         var request = URLRequest(url: url)
         request.httpMethod = "PATCH"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        request.setValue("Bearer \(authorization)", forHTTPHeaderField: "Authorization")
+        request.setValue("\(authorization)", forHTTPHeaderField: "Authorization")
         
         let postData: [String: Any] = [tokenType.serverKey: token]
         
